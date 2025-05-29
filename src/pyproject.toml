@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "leather-scheduler"
+version = "0.1.0"
+description = ""
+authors = ["Ckala <agr.akyla@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+apscheduler = "^3.11.0"
+python-dotenv = "^1.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
