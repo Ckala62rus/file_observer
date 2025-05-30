@@ -1,4 +1,5 @@
 import logging
+import os
 from functools import lru_cache
 
 from dotenv import (
@@ -14,7 +15,12 @@ logger = logging.getLogger(__name__)
 
 
 class Settings:
-    pass
+    EMAIL_LOGIN: str = os.getenv('EMAIL_LOGIN')
+    EMAIL_PASSWORD: str = os.getenv('EMAIL_PASSWORD')
+    EMAIL_SMTP: int = os.getenv('EMAIL_SMTP', 587)
+    SMTP_SERVER: str = os.getenv('SMTP_SERVER')
+    SENDER_EMAIL: str = os.getenv('SENDER_EMAIL')
+    RECEIVER_EMAIL: str = os.getenv('RECEIVER_EMAIL')
 
 
 # Декоратор lru_cache для хэширования конфига, что бы при следующих обращениях брался его кеш
