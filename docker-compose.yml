@@ -1,0 +1,11 @@
+services:
+  backend_file_observer:
+    container_name: backend_file_observer
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    command: bash -c "python scheduler.py"
+    privileged: true
+    volumes:
+      - ./src:/src
+      - ./.env:/src/.env
