@@ -56,10 +56,13 @@ def send_email_with_attachment(
 
     a = os.walk(path_folder)
 
+    res = ""
+
     for subdir, dirs, files in os.walk(path_folder):
         logger.info(dirs)
         for file in files:
             print(file)
+            res = res + file + "\n"
 
 
     # Создаем объект MIMEMultipart
@@ -71,7 +74,8 @@ def send_email_with_attachment(
     logger.info("Send message ... ")
 
     # Добавляем тело письма
-    msg.attach(MIMEText(body, 'plain'))
+    # msg.attach(MIMEText(body, 'plain'))
+    msg.attach(MIMEText(res, 'plain'))
 
     # Добавляем файл
     # attach_perform(attachment_path, msg)
@@ -82,8 +86,8 @@ def send_email_with_attachment(
     server.login(login, password)
 
     # Отправляем письмо
-    # server.sendmail(sender_email, receiver_email, msg.as_string())
-    # server.quit()
+    server.sendmail(sender_email, receiver_email, msg.as_string())
+    server.quit()
     logger.info("Send message ... ")
 
     logger.info("***** Send email finished ***** \n")
