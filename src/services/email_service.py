@@ -9,6 +9,8 @@ from email import encoders
 # from src.utils.logger_project import logging_config
 from utils.logger_project import logging_config
 
+from utils.path_conf import BasePath
+
 # Загружаем настройки логирования из словаря `logging_config`
 logging.config.dictConfig(logging_config)
 logger = logging.getLogger(__name__)
@@ -41,11 +43,14 @@ def send_email_with_attachment(
     """
     logger.info("***** Send email start *****")
 
-    path_folder = r"//10.5.3.19/Programs/Документация/CRM/Технический дизайн"
+    # path_folder = r"//10.5.3.19/Programs/Документация/CRM/Технический дизайн"
     # path_folder = r"\\10.5.3.19\Programs\Документация\CRM\Технический дизайн"
     # path_folder = r"//10.5.3.228/DAXBOT"
     # path_folder = r"\\rk-media\Архив\Отдел информационных технологий\2. Общая\01---kdedov"
     # path_folder = r"\\10.5.3.48\Архив\Отдел информационных технологий\2. Общая\01---kdedov"
+    path_folder = r"/src/data"
+
+    logger.info(f"path_folder: {path_folder}")
 
     obj = os.scandir(path_folder)
 
