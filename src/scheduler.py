@@ -17,10 +17,27 @@ logger = logging.getLogger(__name__)
 
 async def main():
     scheduler = AsyncIOScheduler({'apscheduler.timezone': 'Europe/Moscow'})
+    # scheduler.add_job(
+    #     send_email_with_attachment,
+    #     # trigger="interval",
+    #     trigger=CronTrigger.from_crontab("0 8 * * *"),
+    #     # seconds=5,
+    #     max_instances=1,
+    #     kwargs={
+    #         "sender_email": settings.SENDER_EMAIL,  # from
+    #         "receiver_email": settings.RECEIVER_EMAIL,  # to
+    #         "subject": "Письмо с вложением",
+    #         "body": "Это письмо с вложением, отправленное с помощью Python.",
+    #         "smtp_server": settings.SMTP_SERVER,
+    #         "smtp_port": 587,
+    #         "login": settings.EMAIL_LOGIN,
+    #         "password": settings.EMAIL_PASSWORD,
+    #     },
+    # )
+
     scheduler.add_job(
         send_email_with_attachment,
-        # trigger="interval",
-        trigger=CronTrigger.from_crontab("0 8 * * *"),
+        trigger="interval",
         seconds=5,
         max_instances=1,
         kwargs={
