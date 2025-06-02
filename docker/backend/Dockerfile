@@ -7,13 +7,10 @@ COPY ./src/pyproject.toml \
 
 COPY ./src .
 
-#RUN useradd -ms /bin/sh  eovchinnikov
-#RUN adduser -D eovchinnikov www-data
-#USER eovchinnikov
-
 RUN apk --update add mc curl curl bash nano
 
-RUN pip install poetry && pip install poetry-plugin-export && pip install tzdata
+RUN #pip install poetry && pip install poetry-plugin-export && pip install tzdata
+RUN pip install poetry && pip install poetry-plugin-export
 
 RUN apk --update add \
     && curl -sSL https://install.python-poetry.org | python3 - \
@@ -29,6 +26,6 @@ RUN addgroup -S appgroup && adduser -S eovchinnikov -G appgroup
 # Tell docker that all future commands should run as the appuser user
 USER eovchinnikov
 
-ENV TZ = Europe/Moscow
+#ENV TZ = Europe/Moscow
 
 CMD ["timedatectl", "set-timezone", "Europe/Moscow"]

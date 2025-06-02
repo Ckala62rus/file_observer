@@ -9,3 +9,5 @@ services:
     volumes:
       - ./src:/src
       - ./.env:/src/.env
+    environment:
+      - TZ=Europe/Moscow
