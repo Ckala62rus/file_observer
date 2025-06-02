@@ -16,12 +16,16 @@ logger = logging.getLogger(__name__)
 
 
 async def main():
+    logger.exception(f"""
+            settings.SENDER_EMAIL: {settings.SENDER_EMAIL}
+            settings.RECEIVER_EMAIL: {settings.RECEIVER_EMAIL}
+        """)
+
     scheduler = AsyncIOScheduler({'apscheduler.timezone': 'Europe/Moscow'})
+
     # scheduler.add_job(
     #     send_email_with_attachment,
-    #     # trigger="interval",
     #     trigger=CronTrigger.from_crontab("0 8 * * *"),
-    #     # seconds=5,
     #     max_instances=1,
     #     kwargs={
     #         "sender_email": settings.SENDER_EMAIL,  # from
@@ -35,22 +39,40 @@ async def main():
     #     },
     # )
 
-    scheduler.add_job(
-        send_email_with_attachment,
-        trigger="interval",
-        seconds=5,
-        max_instances=1,
-        kwargs={
-            "sender_email": settings.SENDER_EMAIL,  # from
-            "receiver_email": settings.RECEIVER_EMAIL,  # to
-            "subject": "Письмо с вложением",
-            "body": "Это письмо с вложением, отправленное с помощью Python.",
-            "smtp_server": settings.SMTP_SERVER,
-            "smtp_port": 587,
-            "login": settings.EMAIL_LOGIN,
-            "password": settings.EMAIL_PASSWORD,
-        },
-    )
+    try:
+        scheduler.add_job(
+            send_email_with_attachment,
+            CronTrigger.from_crontab('* * * * *'),
+            kwargs={
+                "sender_email": settings.SENDER_EMAIL,  # from
+                "receiver_email": settings.RECEIVER_EMAIL,  # to
+                "subject": "Письмо с вложением",
+                "body": "Это письмо с вложением, отправленное с помощью Python.",
+                "smtp_server": settings.SMTP_SERVER,
+                "smtp_port": 587,
+                "login": settings.EMAIL_LOGIN,
+                "password": settings.EMAIL_PASSWORD,
+            },
+        )
+    except Exception as e:
+        logger.exception(e)
+
+    # scheduler.add_job(
+    #     send_email_with_attachment,
+    #     trigger="interval",
+    #     seconds=5,
+    #     max_instances=1,
+    #     kwargs={
+    #         "sender_email": settings.SENDER_EMAIL,  # from
+    #         "receiver_email": settings.RECEIVER_EMAIL,  # to
+    #         "subject": "Письмо с вложением",
+    #         "body": "Это письмо с вложением, отправленное с помощью Python.",
+    #         "smtp_server": settings.SMTP_SERVER,
+    #         "smtp_port": 587,
+    #         "login": settings.EMAIL_LOGIN,
+    #         "password": settings.EMAIL_PASSWORD,
+    #     },
+    # )
 
     scheduler.start()
     while True:
