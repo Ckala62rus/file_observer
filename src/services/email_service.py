@@ -1,6 +1,7 @@
 import logging.config
 import os
 import smtplib
+import ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -76,17 +77,29 @@ def send_email_with_attachment(
     # Добавляем файл
     # attach_perform(attachment_path, msg)
 
+    # Создание безопасного контекста SSL
+    context = ssl.create_default_context()
+
     # Устанавливаем соединение с сервером
-    server = smtplib.SMTP(smtp_server, smtp_port)
-    server.starttls()
-    server.login(login, password)
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.ehlo()  # Может быть опущен
+        server.starttls(context=context) # Безопасное соединение
+        server.ehlo()  # Может быть опущен
+        server.login(login, password)
 
-    # Отправляем письмо
-    server.sendmail(sender_email, receiver_email, msg.as_string())
-    server.quit()
-    logger.info("Send message ... ")
+        # Код отправки письма
+        # Отправляем письмо
+        server.sendmail(sender_email, receiver_email, msg.as_string())
+        server.quit()
+        logger.info("Send message ... ")
 
-    logger.info("***** Send email finished ***** \n")
+    except Exception as e:
+        # Выводим текст ошибки в stdout
+        logger.info(e)
+        print(e)
+    finally:
+        logger.info("***** Send email finished ***** \n")
 
 
 def attach_perform(
