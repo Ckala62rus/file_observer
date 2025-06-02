@@ -43,12 +43,8 @@ def send_email_with_attachment(
     """
     logger.info("***** Send email start *****")
 
-    # path_folder = r"//10.5.3.19/Programs/Документация/CRM/Технический дизайн"
-    # path_folder = r"\\10.5.3.19\Programs\Документация\CRM\Технический дизайн"
-    # path_folder = r"//10.5.3.228/DAXBOT"
-    # path_folder = r"\\rk-media\Архив\Отдел информационных технологий\2. Общая\01---kdedov"
-    # path_folder = r"\\10.5.3.48\Архив\Отдел информационных технологий\2. Общая\01---kdedov"
-    path_folder = r"/src/data"
+    # path_folder = r"/src/data"
+    path_folder = r"/src/utils"
 
     logger.info(f"path_folder: {path_folder}")
 
