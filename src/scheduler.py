@@ -5,8 +5,6 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 
-from database.db import create_db
-from services import send_email_with_attachment
 from utils.configuration import settings
 from utils.logger_project import (
     logging_config,
@@ -19,8 +17,6 @@ logger = logging.getLogger(__name__)
 
 
 async def main():
-    create_db()
-
     logger.exception(f"""
             settings.SENDER_EMAIL: {settings.SENDER_EMAIL}
             settings.RECEIVER_EMAIL: {settings.RECEIVER_EMAIL}
