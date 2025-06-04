@@ -22,6 +22,11 @@ class Settings:
     SENDER_EMAIL: str = os.getenv('SENDER_EMAIL')
     RECEIVER_EMAIL: str = os.getenv('RECEIVER_EMAIL')
 
+    FILES_PATH: str = os.getenv('FILES_PATH')
+
+    # Database
+    SQLALCHEMY_DATABASE_URL: str = f"sqlite:///database.db"
+
 
 # Декоратор lru_cache для хэширования конфига, что бы при следующих обращениях брался его кеш
 @lru_cache

@@ -3,12 +3,13 @@ import logging.config
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.interval import IntervalTrigger
 
-from services import send_email_with_attachment
 from utils.configuration import settings
 from utils.logger_project import (
     logging_config,
 )
+from utils.recursive_file_observer import get_files
 
 # Загружаем настройки логирования из словаря `logging_config`
 logging.config.dictConfig(logging_config)
@@ -39,20 +40,29 @@ async def main():
     #     },
     # )
 
+    # try:
+    #     scheduler.add_job(
+    #         send_email_with_attachment,
+    #         CronTrigger.from_crontab('* * * * *'),
+    #         kwargs={
+    #             "sender_email": settings.SENDER_EMAIL,  # from
+    #             "receiver_email": settings.RECEIVER_EMAIL,  # to
+    #             "subject": "Письмо с вложением",
+    #             "body": "Это письмо с вложением, отправленное с помощью Python.",
+    #             "smtp_server": settings.SMTP_SERVER,
+    #             "smtp_port": 587,
+    #             "login": settings.EMAIL_LOGIN,
+    #             "password": settings.EMAIL_PASSWORD,
+    #         },
+    #     )
+    # except Exception as e:
+    #     logger.exception(e)
+
     try:
         scheduler.add_job(
-            send_email_with_attachment,
-            CronTrigger.from_crontab('* * * * *'),
-            kwargs={
-                "sender_email": settings.SENDER_EMAIL,  # from
-                "receiver_email": settings.RECEIVER_EMAIL,  # to
-                "subject": "Письмо с вложением",
-                "body": "Это письмо с вложением, отправленное с помощью Python.",
-                "smtp_server": settings.SMTP_SERVER,
-                "smtp_port": 587,
-                "login": settings.EMAIL_LOGIN,
-                "password": settings.EMAIL_PASSWORD,
-            },
+            func=get_files,
+            trigger=IntervalTrigger(seconds=5),
+            max_instances=1,
         )
     except Exception as e:
         logger.exception(e)
