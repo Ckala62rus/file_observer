@@ -12,7 +12,7 @@ from utils.recursive_file_observer import get_files
 logging.config.dictConfig(logging_config)
 logger = logging.getLogger(__name__)
 
-async def save_file_to_db_and_send_notification():
+async def save_file_to_db_and_send_notification() -> None:
     # get all files from folder
     files = get_files()
 
@@ -31,17 +31,18 @@ async def save_file_to_db_and_send_notification():
 
     logger.info(f"**** Saved {len(files_model)} files to database")
 
-    # prepare message for send email
-    message = "Список новых файлов \n"
+    if len(files_model) > 0:
+        # prepare message for send email
+        message = "Список новых файлов \n"
 
-    for file_model in files_model:
-        message += f"Название файла: {file_model.filename} | Путь до файла: {file_model.path} \n"
+        for file_model in files_model:
+            message += f"Название файла: {file_model.filename} | Путь до файла: {file_model.path} \n"
 
-    emails = json.loads(settings.EMAILS)
+        emails = json.loads(settings.EMAILS)
 
-    for email in emails:
-        send_email_with_attachment(
-            receiver_email=email,
-            subject="Новый файлы",
-            body=message
-        )
+        for email in emails:
+            send_email_with_attachment(
+                receiver_email=email,
+                subject="Новый файлы",
+                body=message
+            )
