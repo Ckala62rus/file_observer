@@ -25,6 +25,7 @@ async def main():
     logger.exception(f"""
             settings.SENDER_EMAIL: {settings.SENDER_EMAIL}
             settings.RECEIVER_EMAIL: {settings.RECEIVER_EMAIL}
+            settings.RECEIVER_EMAIL: {settings.EMAILS}
         """)
 
     scheduler = AsyncIOScheduler({'apscheduler.timezone': 'Europe/Moscow'})
