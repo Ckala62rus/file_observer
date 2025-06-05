@@ -37,7 +37,7 @@ async def save_file_to_db_and_send_notification():
     for file_model in files_model:
         message += f"Название файла: {file_model.filename} | Путь до файла: {file_model.path} \n"
 
-    emails = json.load(settings.EMAILS)
+    emails = json.loads(settings.EMAILS)
 
     for email in emails:
         send_email_with_attachment(
