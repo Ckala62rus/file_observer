@@ -22,7 +22,7 @@ async def create_file(file_name: str, path: str) -> File:
         return file
 
 async def get_file_by_filename(file_name: str) -> File:
-    logger.info(f"get file with file_name {file_name}")
+    # logger.info(f"get file with file_name {file_name}")
     async with async_session() as session:
         result = await session.execute(select(File).where(File.filename == file_name))
         return result.scalar_one_or_none()
