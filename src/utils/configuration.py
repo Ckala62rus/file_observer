@@ -24,6 +24,9 @@ class Settings:
 
     FILES_PATH: str = os.getenv('FILES_PATH')
 
+    # Cron expression
+    CRON_EXPRESSION = os.getenv('CRON_EXPRESSION')
+
     # Database
     SQLALCHEMY_DATABASE_URL: str = f"sqlite:///database.db"
 
