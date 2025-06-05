@@ -1,6 +1,10 @@
+import json
 import logging.config
 
+from domains.models import File
 from repository.file_repository import create_file, get_file_by_filename
+from services import send_email_with_attachment
+from utils.configuration import settings
 from utils.logger_project import logging_config
 from utils.recursive_file_observer import get_files
 
@@ -13,7 +17,7 @@ async def save_file_to_db_and_send_notification():
     files = get_files()
 
     # save files to db
-    files_model: list = []
+    files_model: list[File] = []
 
     for filename, filepath in files.items():
 
@@ -25,5 +29,19 @@ async def save_file_to_db_and_send_notification():
             logger.info(f"File was created with id: {file.id} | filename: {file.filename} ")
             files_model.append(file)
 
-    logger.info(f"Saved {len(files_model)} files to database")
-    logger.info(files_model)
+    logger.info(f"**** Saved {len(files_model)} files to database")
+
+    # prepare message for send email
+    message = "Список новых файлов \n"
+
+    for file_model in files_model:
+        message += f"Название файла: {file_model.filename} | Путь до файла: {file_model.path} \n"
+
+    emails = json.load(settings.EMAILS)
+
+    for email in emails:
+        send_email_with_attachment(
+            receiver_email=email,
+            subject="Новый файлы",
+            body=message
+        )
