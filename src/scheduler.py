@@ -11,7 +11,6 @@ from utils.configuration import settings
 from utils.logger_project import (
     logging_config,
 )
-from utils.recursive_file_observer import get_files
 
 
 # Загружаем настройки логирования из словаря `logging_config`
