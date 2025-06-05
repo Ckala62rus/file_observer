@@ -24,7 +24,4 @@ def get_files() -> dict[str,str]:
             out +=f"path: {file_path} | file: {filename}"
             files_dict[filename] = file_path
 
-    logger.info("***** Starting *****")
-    logger.info(f"out: {out}")
-    logger.info("***** End *****")
     return files_dict
