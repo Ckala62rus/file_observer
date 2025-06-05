@@ -33,7 +33,7 @@ async def save_file_to_db_and_send_notification() -> None:
 
     if len(files_model) > 0:
         # prepare message for send email
-        message = "Список новых файлов \n"
+        message = "Документ для подтверждения ресурса размещен \n\n"
 
         for file_model in files_model:
             message += f"Название файла: {file_model.filename} | Путь до файла: {file_model.path} \n"
@@ -43,6 +43,6 @@ async def save_file_to_db_and_send_notification() -> None:
         for email in emails:
             send_email_with_attachment(
                 receiver_email=email,
-                subject="Новый файлы",
+                subject="Покрытие заказов на продажу",
                 body=message
             )

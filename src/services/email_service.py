@@ -42,24 +42,6 @@ def send_email_with_attachment(
     login: str = settings.EMAIL_LOGIN
     password: str = settings.EMAIL_PASSWORD
 
-    # path_folder = r"/src/data"
-    # path_folder = r"/src/utils"
-
-    # logger.info(f"path_folder: {path_folder}")
-
-    # obj = os.scandir(path_folder)
-
-    # a = os.walk(path_folder)
-
-    # res = ""
-
-    # for subdir, dirs, files in os.walk(path_folder):
-    #     logger.info(dirs)
-    #     for file in files:
-    #         print(file)
-    #         res = res + file + "\n"
-
-
     # Создаем объект MIMEMultipart
     msg = MIMEMultipart()
     msg['From'] = sender_email
