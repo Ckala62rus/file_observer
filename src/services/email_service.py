@@ -9,6 +9,7 @@ from email import encoders
 
 # from src.utils.logger_project import logging_config
 from src.utils.logger_project import logging_config
+from utils.configuration import settings
 
 # Загружаем настройки логирования из словаря `logging_config`
 logging.config.dictConfig(logging_config)
@@ -16,48 +17,48 @@ logger = logging.getLogger(__name__)
 
 
 def send_email_with_attachment(
-        sender_email: str,
         receiver_email: str,
         subject: str,
         body: str,
-        smtp_server: str,
-        smtp_port: int,
-        login: str,
-        password: str,
+        # smtp_server: str,
+        # smtp_port: int,
+        # login: str,
+        # password: str,
         attachment_path: str = None,
 ):
     """
     Метод для отправки писем с возможностью прикрепления файла
 
-    :param sender_email:
     :param receiver_email:
     :param subject:
     :param body:
     :param attachment_path:
-    :param smtp_server:
-    :param smtp_port:
-    :param login:
-    :param password:
     :return:
     """
     logger.info("***** Send email start *****")
 
+    sender_email: str = settings.EMAIL_LOGIN
+    smtp_server: str = settings.SMTP_SERVER
+    smtp_port: int = settings.EMAIL_SMTP
+    login: str = settings.EMAIL_LOGIN
+    password: str = settings.EMAIL_PASSWORD
+
     # path_folder = r"/src/data"
-    path_folder = r"/src/utils"
+    # path_folder = r"/src/utils"
 
-    logger.info(f"path_folder: {path_folder}")
+    # logger.info(f"path_folder: {path_folder}")
 
-    obj = os.scandir(path_folder)
+    # obj = os.scandir(path_folder)
 
-    a = os.walk(path_folder)
+    # a = os.walk(path_folder)
 
-    res = ""
+    # res = ""
 
-    for subdir, dirs, files in os.walk(path_folder):
-        logger.info(dirs)
-        for file in files:
-            print(file)
-            res = res + file + "\n"
+    # for subdir, dirs, files in os.walk(path_folder):
+    #     logger.info(dirs)
+    #     for file in files:
+    #         print(file)
+    #         res = res + file + "\n"
 
 
     # Создаем объект MIMEMultipart
@@ -69,8 +70,8 @@ def send_email_with_attachment(
     logger.info("Send message ... ")
 
     # Добавляем тело письма
-    # msg.attach(MIMEText(body, 'plain'))
-    msg.attach(MIMEText(res, 'plain'))
+    msg.attach(MIMEText(body, 'plain'))
+    # msg.attach(MIMEText(res, 'plain'))
 
     # Добавляем файл
     # attach_perform(attachment_path, msg)
