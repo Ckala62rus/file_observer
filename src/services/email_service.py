@@ -8,9 +8,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 
 # from src.utils.logger_project import logging_config
-from utils.logger_project import logging_config
-
-from utils.path_conf import BasePath
+from src.utils.logger_project import logging_config
 
 # Загружаем настройки логирования из словаря `logging_config`
 logging.config.dictConfig(logging_config)

@@ -27,6 +27,9 @@ class Settings:
     # Database
     SQLALCHEMY_DATABASE_URL: str = f"sqlite:///database.db"
 
+    # Email for send report
+    EMAILS: list = os.getenv('EMAILS')
+
 
 # Декоратор lru_cache для хэширования конфига, что бы при следующих обращениях брался его кеш
 @lru_cache

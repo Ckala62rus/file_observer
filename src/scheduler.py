@@ -5,11 +5,14 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 
+from core.db_utils import init_db
+from services.file_service import save_file_to_db_and_send_notification
 from utils.configuration import settings
 from utils.logger_project import (
     logging_config,
 )
 from utils.recursive_file_observer import get_files
+
 
 # Загружаем настройки логирования из словаря `logging_config`
 logging.config.dictConfig(logging_config)
@@ -17,6 +20,8 @@ logger = logging.getLogger(__name__)
 
 
 async def main():
+    await init_db()
+
     logger.exception(f"""
             settings.SENDER_EMAIL: {settings.SENDER_EMAIL}
             settings.RECEIVER_EMAIL: {settings.RECEIVER_EMAIL}
@@ -60,7 +65,8 @@ async def main():
 
     try:
         scheduler.add_job(
-            func=get_files,
+            # func=get_files,
+            func=save_file_to_db_and_send_notification,
             trigger=IntervalTrigger(seconds=5),
             max_instances=1,
         )

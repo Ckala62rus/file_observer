@@ -5,21 +5,26 @@ from utils.configuration import settings
 from utils.logger_project import logging_config
 
 
+logging.config.dictConfig(logging_config)
 logger = logging.getLogger(__name__)
 
 
-def get_files():
+def get_files() -> dict[str,str]:
     logger.info("Starting file observer")
     out: str = ""
+    files_dict:dict[str,str] = {}
+
+    if settings.FILES_PATH is None:
+        logger.error("Files path not set in env. file!!!")
+        raise Exception("Files path not set in env. file!!")
 
     for dirpath, _, filenames in os.walk(fr"{settings.FILES_PATH}"):
-        for f in filenames:
-            a = os.path.abspath(os.path.join(dirpath, f))
-            # print(f"path: {a} | file: {f}")
-            logger.debug(f"path: {a} | file: {f} \n")
-            out +=f"path: {a} | file: {f}"
+        for filename in filenames:
+            file_path = os.path.abspath(os.path.join(dirpath, filename))
+            out +=f"path: {file_path} | file: {filename}"
+            files_dict[filename] = file_path
 
     logger.info("***** Starting *****")
     logger.info(f"out: {out}")
     logger.info("***** End *****")
-    return out
+    return files_dict
