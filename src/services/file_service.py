@@ -39,6 +39,9 @@ async def save_file_to_db_and_send_notification() -> None:
             message += f"Название файла: {file_model.filename} | Путь до файла: {file_model.path} \n"
 
         emails = json.loads(settings.EMAILS)
+        emails_list = ' | '.join(str(x) for x in emails)
+
+        message += f"Список получателей: {emails_list} \n\n"
 
         for email in emails:
             send_email_with_attachment(
